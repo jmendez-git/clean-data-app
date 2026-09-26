@@ -1,7 +1,6 @@
 import streamlit as st
-import csv
-import io
 import os
+from utils.import_data import get_data_lib_csv
 
 st.header('Datos')
 file = st.file_uploader(
@@ -16,18 +15,13 @@ file = st.file_uploader(
 st.divider()
 
 if file is not None:
-    string_data = file.getvalue().decode('utf-8')
 
-    io_string =io.StringIO(string_data)
-    lector_dictionary = csv.DictReader(io_string)
+    data_list = get_data_lib_csv(file)
+    # st.write(data_list)
 
-    # lector_csv = csv.reader(io_string)
-
-    data_list = list(lector_dictionary)
-
-    if data_list:
+    if data_list[2]:
         st.write('##### Previsualización')
-        st.dataframe(data_list)
+        st.dataframe(data_list[2])
 
         file_name = st.text_input(
             'Renombrar al archivo',
